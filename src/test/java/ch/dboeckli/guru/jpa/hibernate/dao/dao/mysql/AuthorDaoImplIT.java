@@ -14,6 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test_mysql")
@@ -59,7 +60,6 @@ class AuthorDaoImplIT {
     }
 
     @Test
-    @Disabled
     void testSaveAuthor() {
         Author author = new Author();
         author.setFirstName("John");
@@ -67,6 +67,7 @@ class AuthorDaoImplIT {
         Author saved = authorDao.saveNewAuthor(author);
 
         assertThat(saved).isNotNull();
+        assertNotNull(saved.getId());
     }
 
     @Test

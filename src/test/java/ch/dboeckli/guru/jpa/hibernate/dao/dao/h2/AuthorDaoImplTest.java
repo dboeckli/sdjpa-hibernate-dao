@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Import({ AuthorDaoImpl.class })
@@ -57,7 +58,6 @@ class AuthorDaoImplTest {
     }
 
     @Test
-    @Disabled
     void testSaveAuthor() {
         Author author = new Author();
         author.setFirstName("John");
@@ -65,6 +65,7 @@ class AuthorDaoImplTest {
         Author saved = authorDao.saveNewAuthor(author);
 
         assertThat(saved).isNotNull();
+        assertNotNull(saved.getId());
     }
 
     @Test
