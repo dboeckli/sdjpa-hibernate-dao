@@ -4,18 +4,16 @@ import ch.dboeckli.guru.jpa.hibernate.dao.dao.AuthorDao;
 import ch.dboeckli.guru.jpa.hibernate.dao.dao.AuthorDaoImpl;
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Author;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ActiveProfiles("test_mysql")
 @Import(AuthorDaoImpl.class)
@@ -28,7 +26,6 @@ class AuthorDaoImplIT {
     AuthorDao authorDao;
 
     @Test
-    @Disabled
     void testDeleteAuthor() {
         Author author = new Author();
         author.setFirstName("john");
@@ -38,10 +35,10 @@ class AuthorDaoImplIT {
 
         authorDao.deleteAuthorById(saved.getId());
 
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            Author deleted = authorDao.getById(saved.getId());
-        });
 
+        Author deleted = authorDao.getById(saved.getId());
+        assertThat(deleted).isNull();
+        assertNull(authorDao.getById(saved.getId()));
     }
 
     @Test
