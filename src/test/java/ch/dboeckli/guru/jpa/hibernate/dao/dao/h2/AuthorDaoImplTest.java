@@ -43,7 +43,6 @@ class AuthorDaoImplTest {
     }
 
     @Test
-    @Disabled
     void testUpdateAuthor() {
         Author author = new Author();
         author.setFirstName("john");
