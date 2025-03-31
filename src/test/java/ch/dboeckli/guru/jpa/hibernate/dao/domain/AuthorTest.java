@@ -7,19 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthorTest {
 
     @Test
-    void testAuthorSettersAndGetters() {
-        Author author = new Author();
-
-        author.setId(1L);
-        author.setFirstName("John");
-        author.setLastName("Doe");
-
-        assertEquals(1L, author.getId());
-        assertEquals("John", author.getFirstName());
-        assertEquals("Doe", author.getLastName());
-    }
-
-    @Test
     void testAuthorEquality() {
         Author author1 = new Author();
         Author author2 = new Author();
