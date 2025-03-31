@@ -1,38 +1,64 @@
 package ch.dboeckli.guru.jpa.hibernate.dao.dao;
 
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Author;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class AuthorDaoImpl implements AuthorDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final EntityManagerFactory emf;
 
     @Override
     public Author getById(Long id) {
-        return null;
+        return getEntityManager().find(Author.class, id);
     }
 
     @Override
     public Author findAuthorByName(String firstName, String lastName) {
-        return null;
+        TypedQuery<Author> query = getEntityManager().createQuery(
+            "SELECT author FROM Author author WHERE author.firstName = :first_name and author.lastName = :last_name", Author.class);
+        query.setParameter("first_name", firstName);
+        query.setParameter("last_name", lastName);
+
+        return query.getSingleResult();
     }
 
     @Override
     public Author saveNewAuthor(Author author) {
-        return null;
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.persist(author);
+        em.flush();
+        em.getTransaction().commit();
+        return author;
     }
 
     @Override
     public Author updateAuthor(Author author) {
-        return null;
+        EntityManager em = getEntityManager();
+        em.joinTransaction();
+        em.merge(author);
+        em.flush();
+        em.clear();
+        return em.find(Author.class, author.getId());
     }
 
     @Override
     public void deleteAuthorById(Long id) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        Author author = em.find(Author.class, id);
+        em.remove(author);
+        em.flush();
+        em.getTransaction().commit();
+    }
 
+    private EntityManager getEntityManager(){
+        return emf.createEntityManager();
     }
 }
