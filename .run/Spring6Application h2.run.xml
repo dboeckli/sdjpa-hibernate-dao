@@ -2,7 +2,7 @@
   <configuration default="false" name="Spring6Application h2" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="h2" />
     <module name="sdjpa-jdbc" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="ch.dboeckli.guru.jpa.jdbctemplate.Spring6Application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="ch.dboeckli.guru.jpa.hibernate.dao.Spring6Application" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

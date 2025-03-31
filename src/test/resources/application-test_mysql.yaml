@@ -1,6 +1,6 @@
 spring:
   application:
-    name: sdjpa-jdbc-template
+    name: sdjpa-hibernate-dao
 
   docker:
     compose:

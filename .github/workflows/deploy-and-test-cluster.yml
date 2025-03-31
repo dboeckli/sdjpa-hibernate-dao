@@ -38,15 +38,15 @@ jobs:
       - name: Deploy application
         run: |
           # Replace the version placeholder in the deployment manifest
-          sed -i 's|image: domboeckli/sdjpa-jdbc-template:[^[:space:]]*|image: domboeckli/sdjpa-jdbc-template:${{ inputs.version }}|g' k8s/app.yml
+          sed -i 's|image: domboeckli/sdjpa-hibernate-dao:[^[:space:]]*|image: domboeckli/sdjpa-hibernate-dao:${{ inputs.version }}|g' k8s/app.yml
           kubectl apply -f k8s/
 
       - name: Wait for Pods to be ready
         run: |
-          if ! kubectl wait --for=condition=ready pod -l app=sdjpa-jdbc-template --timeout=180s; then
+          if ! kubectl wait --for=condition=ready pod -l app=sdjpa-hibernate-dao --timeout=180s; then
             echo "Pod did not become ready within 180 seconds. Displaying logs:"
-            kubectl get pods -l app=sdjpa-jdbc-template
-            POD_NAME=$(kubectl get pods -l app=sdjpa-jdbc-template -o jsonpath="{.items[0].metadata.name}")
+            kubectl get pods -l app=sdjpa-hibernate-dao
+            POD_NAME=$(kubectl get pods -l app=sdjpa-hibernate-dao -o jsonpath="{.items[0].metadata.name}")
             kubectl logs $POD_NAME
             echo "Describing the pod:"
             kubectl describe pod $POD_NAME
@@ -59,7 +59,7 @@ jobs:
       - name: Display Deployment Information
         run: |
           echo "Deployment Information:"
-          kubectl get deployment sdjpa-jdbc-template -o yaml
+          kubectl get deployment sdjpa-hibernate-dao -o yaml
           
           
 
