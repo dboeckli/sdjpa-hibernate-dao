@@ -7,6 +7,8 @@ import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class BookDaoImpl implements BookDao {
@@ -20,6 +22,14 @@ public class BookDaoImpl implements BookDao {
             query.setParameter("isbn", isbn);
 
             return query.getSingleResult();
+        }
+    }
+
+    @Override
+    public List<Book> findAllBooks() {
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Book> typedQuery = em.createNamedQuery(Book.FIND_ALL_QUERY, Book.class);
+            return typedQuery.getResultList();
         }
     }
 
@@ -38,6 +48,15 @@ public class BookDaoImpl implements BookDao {
             query.setParameter("title", title);
 
             return query.getSingleResult();
+        }
+    }
+
+    @Override
+    public Book findBookByTitleWithNamedQuery(String title) {
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Book> typedQuery = em.createNamedQuery(Book.FIND_BY_TITLE_QUERY, Book.class);
+            typedQuery.setParameter("title", title);
+            return typedQuery.getSingleResult();
         }
     }
 

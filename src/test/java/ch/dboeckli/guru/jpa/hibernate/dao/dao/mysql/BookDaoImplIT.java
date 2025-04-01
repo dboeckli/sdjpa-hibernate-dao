@@ -11,9 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test_mysql")
 @Import(BookDaoImpl.class)
@@ -34,6 +35,12 @@ class BookDaoImplIT {
     @Test
     void findBookByTitle() {
         Book book = bookDao.findBookByTitle("Domain-Driven Design");
+        assertThat(book).isNotNull();
+    }
+
+    @Test
+    void findBookByTitleWithNamedQuery() {
+        Book book = bookDao.findBookByTitleWithNamedQuery("Domain-Driven Design");
         assertThat(book).isNotNull();
     }
 
@@ -85,5 +92,15 @@ class BookDaoImplIT {
     void findByIsbn() {
         Book book = bookDao.findByIsbn("978-1617294945");
         assertThat(book).isNotNull();
+    }
+
+    @Test
+    void findAllBooks() {
+        List<Book> books = bookDao.findAllBooks();
+
+        assertAll("Author List Assertions",
+            () -> assertThat(books).isNotNull(),
+            () -> assertThat(books).hasSizeGreaterThan(0)
+        );
     }
 }
