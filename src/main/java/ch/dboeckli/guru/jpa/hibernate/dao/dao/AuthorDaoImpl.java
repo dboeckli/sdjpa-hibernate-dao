@@ -3,9 +3,12 @@ package ch.dboeckli.guru.jpa.hibernate.dao.dao;
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +31,16 @@ public class AuthorDaoImpl implements AuthorDao {
             query.setParameter("first_name", firstName);
             query.setParameter("last_name", lastName);
             return query.getSingleResult();
+        }
+    }
+
+    @Override
+    public List<Author> listAuthorByLastNameLike(String lastName) {
+        try (EntityManager em = getEntityManager()) {
+            Query query = em.createQuery("SELECT author from Author author where author.lastName like :last_name");
+            query.setParameter("last_name", lastName + "%");
+            List<Author> authors = query.getResultList();
+            return authors;
         }
     }
 
