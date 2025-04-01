@@ -11,9 +11,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test_mysql")
 @Import(AuthorDaoImpl.class)
@@ -73,9 +74,35 @@ class AuthorDaoImplIT {
     }
 
     @Test
+    void testGetAuthorByNameWithNamedQuery() {
+        Author author = authorDao.findAuthorByNameWithNamedQuery("Craig", "Walls");
+        assertThat(author).isNotNull();
+    }
+
+    @Test
     void testGetAuthor() {
         Author author = authorDao.getById(1L);
         assertThat(author).isNotNull();
+    }
+
+    @Test
+    void testListAuthorByLastNameLike() {
+        List<Author> authors = authorDao.listAuthorByLastNameLike("Wall");
+
+        assertAll("Author List Assertions",
+            () -> assertThat(authors).isNotNull(),
+            () -> assertThat(authors).hasSizeGreaterThan(0)
+        );
+    }
+
+    @Test
+    void findAllAuthors() {
+        List<Author> authors = authorDao.findAllAuthors();
+
+        assertAll("Author List Assertions",
+            () -> assertThat(authors).isNotNull(),
+            () -> assertThat(authors).hasSizeGreaterThan(0)
+        );
     }
 
 }

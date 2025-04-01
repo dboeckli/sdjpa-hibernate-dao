@@ -1,9 +1,6 @@
 package ch.dboeckli.guru.jpa.hibernate.dao.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +11,12 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedQuery(name = Author.FIND_ALL_QUERY, query = "FROM Author")
+@NamedQuery(name = Author.FIND_BY_NAME_QUERY, query = "FROM Author a WHERE a.firstName = :first_name and a.lastName = :last_name")
 public class Author {
+
+    public static final String FIND_ALL_QUERY = "author_find_all";
+    public static final String FIND_BY_NAME_QUERY = "author_find_by_name";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

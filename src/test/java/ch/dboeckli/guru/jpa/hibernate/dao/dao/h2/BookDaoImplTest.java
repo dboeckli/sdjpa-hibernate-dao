@@ -78,4 +78,10 @@ class BookDaoImplTest {
         assertThat(deleted).isNull();
         assertNull(bookDao.getById(saved.getId()));
     }
+
+    @Test
+    void findByIsbn() {
+        Book book = bookDao.findByIsbn("978-1617294945");
+        assertThat(book).isNotNull();
+    }
 }
