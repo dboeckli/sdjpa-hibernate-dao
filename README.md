@@ -1,4 +1,4 @@
-Spring Data JPA - Hibernate DAO
+# Spring Data JPA - Hibernate DAO
 This repository contains source code examples to support my course Spring Data JPA and Hibernate Beginner to Guru
 
 ## Flyway
