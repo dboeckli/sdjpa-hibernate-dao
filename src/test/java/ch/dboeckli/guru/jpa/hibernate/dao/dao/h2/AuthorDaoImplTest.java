@@ -86,4 +86,14 @@ class AuthorDaoImplTest {
         );
     }
 
+    @Test
+    void findAllAuthors() {
+        List<Author> authors = authorDao.findAllAuthors();
+
+        assertAll("Author List Assertions",
+            () -> assertThat(authors).isNotNull(),
+            () -> assertThat(authors).hasSizeGreaterThan(0)
+        );
+    }
+
 }

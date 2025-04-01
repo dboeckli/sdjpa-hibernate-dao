@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static ch.dboeckli.guru.jpa.hibernate.dao.domain.Author.FIND_ALL_QUERY;
+
 @Component
 @RequiredArgsConstructor
 public class AuthorDaoImpl implements AuthorDao {
@@ -40,6 +42,14 @@ public class AuthorDaoImpl implements AuthorDao {
                 "SELECT author FROM Author author WHERE author.lastName LIKE :last_name", Author.class);
             query.setParameter("last_name", lastName + "%");
             return query.getResultList();
+        }
+    }
+
+    @Override
+    public List<Author> findAllAuthors() {
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Author> typedQuery = em.createNamedQuery(FIND_ALL_QUERY, Author.class);
+            return typedQuery.getResultList();
         }
     }
 
