@@ -105,4 +105,10 @@ class AuthorDaoImplIT {
         );
     }
 
+    @Test
+    void testGetAuthorByNameCriteria() {
+        Author author = authorDao.findAuthorByNameCriteria("Craig", "Walls");
+        assertThat(author).isNotNull();
+    }
+
 }
