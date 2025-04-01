@@ -80,6 +80,20 @@ class AuthorDaoImplIT {
     }
 
     @Test
+    void testGetAuthorByNameCriteria() {
+        Author author = authorDao.findAuthorByNameCriteria("Craig", "Walls");
+        assertThat(author).isNotNull();
+    }
+
+
+    @Test
+    void testGetAuthorByNameNative() {
+        Author author = authorDao.findAuthorByNameNative("Craig", "Walls");
+
+        assertThat(author).isNotNull();
+    }
+
+    @Test
     void testGetAuthor() {
         Author author = authorDao.getById(1L);
         assertThat(author).isNotNull();
@@ -104,11 +118,4 @@ class AuthorDaoImplIT {
             () -> assertThat(authors).hasSizeGreaterThan(0)
         );
     }
-
-    @Test
-    void testGetAuthorByNameCriteria() {
-        Author author = authorDao.findAuthorByNameCriteria("Craig", "Walls");
-        assertThat(author).isNotNull();
-    }
-
 }

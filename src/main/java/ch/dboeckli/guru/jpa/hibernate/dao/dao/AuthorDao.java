@@ -11,6 +11,10 @@ public interface AuthorDao {
 
     Author findAuthorByNameWithNamedQuery(String firstName, String lastName);
 
+    Author findAuthorByNameCriteria(String firstName, String lastName);
+
+    Author findAuthorByNameNative(String firstName, String lastName);
+
     List<Author> listAuthorByLastNameLike(String lastName);
 
     List<Author> findAllAuthors();
@@ -20,6 +24,4 @@ public interface AuthorDao {
     Author updateAuthor(Author author);
 
     void deleteAuthorById(Long id);
-
-    Author findAuthorByNameCriteria(String firstName, String lastName);
 }
