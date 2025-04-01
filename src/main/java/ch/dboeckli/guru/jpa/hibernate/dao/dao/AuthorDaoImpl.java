@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 import static ch.dboeckli.guru.jpa.hibernate.dao.domain.Author.FIND_ALL_QUERY;
+import static ch.dboeckli.guru.jpa.hibernate.dao.domain.Author.FIND_BY_NAME_QUERY;
 
 @Component
 @RequiredArgsConstructor
@@ -32,6 +33,16 @@ public class AuthorDaoImpl implements AuthorDao {
             query.setParameter("first_name", firstName);
             query.setParameter("last_name", lastName);
             return query.getSingleResult();
+        }
+    }
+
+    @Override
+    public Author findAuthorByNameWithNamedQuery(String firstName, String lastName) {
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Author> typedQuery = em.createNamedQuery(FIND_BY_NAME_QUERY, Author.class);
+            typedQuery.setParameter("first_name", firstName);
+            typedQuery.setParameter("last_name", lastName);
+            return typedQuery.getSingleResult();
         }
     }
 

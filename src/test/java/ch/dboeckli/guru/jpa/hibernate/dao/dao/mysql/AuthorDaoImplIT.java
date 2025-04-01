@@ -74,6 +74,12 @@ class AuthorDaoImplIT {
     }
 
     @Test
+    void testGetAuthorByNameWithNamedQuery() {
+        Author author = authorDao.findAuthorByNameWithNamedQuery("Craig", "Walls");
+        assertThat(author).isNotNull();
+    }
+
+    @Test
     void testGetAuthor() {
         Author author = authorDao.getById(1L);
         assertThat(author).isNotNull();

@@ -9,6 +9,8 @@ public interface AuthorDao {
 
     Author findAuthorByName(String firstName, String lastName);
 
+    Author findAuthorByNameWithNamedQuery(String firstName, String lastName);
+
     List<Author> listAuthorByLastNameLike(String lastName);
 
     List<Author> findAllAuthors();
