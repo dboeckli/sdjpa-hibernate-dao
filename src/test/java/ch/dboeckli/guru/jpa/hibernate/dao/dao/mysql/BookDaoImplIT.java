@@ -45,6 +45,18 @@ class BookDaoImplIT {
     }
 
     @Test
+    void testGetBookByTitleCriteria() {
+        Book book = bookDao.findBookByTitleCriteria("Domain-Driven Design");
+        assertThat(book).isNotNull();
+    }
+
+    @Test
+    void testGetBookByTitleNative() {
+        Book book = bookDao.findBookByTitleNative("Domain-Driven Design");
+        assertThat(book).isNotNull();
+    }
+
+    @Test
     void saveNewBook() {
         Book book = new Book();
         book.setIsbn("1234");
@@ -102,11 +114,5 @@ class BookDaoImplIT {
             () -> assertThat(books).isNotNull(),
             () -> assertThat(books).hasSizeGreaterThan(0)
         );
-    }
-
-    @Test
-    void testGetBookByTitleCriteria() {
-        Book book = bookDao.findBookByTitleCriteria("Domain-Driven Design");
-        assertThat(book).isNotNull();
     }
 }

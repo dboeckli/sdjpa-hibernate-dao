@@ -3,6 +3,7 @@ package ch.dboeckli.guru.jpa.hibernate.dao.dao;
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,15 @@ public class BookDaoImpl implements BookDao {
             TypedQuery<Book> typedQuery = em.createNamedQuery(Book.FIND_BY_TITLE_QUERY, Book.class);
             typedQuery.setParameter("title", title);
             return typedQuery.getSingleResult();
+        }
+    }
+
+    @Override
+    public Book findBookByTitleNative(String title) {
+        try (EntityManager em = getEntityManager()) {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM book WHERE title = :title", Book.class);
+            nativeQuery.setParameter("title", title);
+            return (Book) nativeQuery.getSingleResult();
         }
     }
 
