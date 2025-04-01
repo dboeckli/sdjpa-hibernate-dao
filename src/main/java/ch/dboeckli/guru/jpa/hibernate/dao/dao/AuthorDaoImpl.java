@@ -3,6 +3,7 @@ package ch.dboeckli.guru.jpa.hibernate.dao.dao;
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
@@ -117,6 +118,18 @@ public class AuthorDaoImpl implements AuthorDao {
             typedQuery.setParameter(lastNameParam, lastName);
 
             return typedQuery.getSingleResult();
+        }
+    }
+
+    @Override
+    public Author findAuthorByNameNative(String firstName, String lastName) {
+        try (EntityManager em = getEntityManager()) {
+            Query nativeQuery = em.createNativeQuery("SELECT * FROM author a WHERE a.first_name = ? and a.last_name = ?", Author.class);
+
+            nativeQuery.setParameter(1, firstName);
+            nativeQuery.setParameter(2, lastName);
+
+            return (Author) nativeQuery.getSingleResult();
         }
     }
 
