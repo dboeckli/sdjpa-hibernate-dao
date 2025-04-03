@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -112,6 +114,50 @@ class AuthorDaoImplTest {
         assertAll("Author List Assertions",
             () -> assertThat(authors).isNotNull(),
             () -> assertThat(authors).hasSizeGreaterThan(0)
+        );
+    }
+
+    @Test
+    void findAllAuthorsByLastName() {
+        List<Author> authors = authorDao.findAllAuthorsByLastName("Smith", PageRequest.of(0, 10));
+
+        assertAll("Author List Assertions",
+            () -> assertThat(authors).isNotNull(),
+            () -> assertThat(authors).hasSize(10)
+        );
+    }
+
+    @Test
+    void findAllAuthorsByLastNameSortLastNameDesc() {
+        List<Author> authors = authorDao.findAllAuthorsByLastName("Smith",
+            PageRequest.of(0, 10, Sort.by(Sort.Order.desc("firstname"))));
+
+        assertAll("Author List Assertions",
+            () -> assertThat(authors).isNotNull(),
+            () -> assertThat(authors).hasSize(10),
+            () -> assertThat(authors.getFirst().getFirstName()).isEqualTo("Yugal")
+        );
+    }
+
+    @Test
+    void findAllAuthorsByLastNameSortLastNameAsc() {
+        List<Author> authors = authorDao.findAllAuthorsByLastName("Smith",
+            PageRequest.of(0, 10, Sort.by(Sort.Order.asc("firstname"))));
+
+        assertAll("Author List Assertions",
+            () -> assertThat(authors).isNotNull(),
+            () -> assertThat(authors).hasSize(10),
+            () -> assertThat(authors.getFirst().getFirstName()).isEqualTo("Ahmed")
+        );
+    }
+
+    @Test
+    void findAllAuthorsByLastNameAllRecs() {
+        List<Author> authors = authorDao.findAllAuthorsByLastName("Smith", PageRequest.of(0, 100));
+
+        assertAll("Author List Assertions",
+            () -> assertThat(authors).isNotNull(),
+            () -> assertThat(authors).hasSize(40)
         );
     }
 }
