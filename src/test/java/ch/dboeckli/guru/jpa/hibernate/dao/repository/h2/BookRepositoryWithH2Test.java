@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -25,8 +26,10 @@ class BookRepositoryWithH2Test {
 
         long countAfter = bookRepository.count();
 
-        assertEquals(5, countBefore);
-        assertEquals(6, countAfter);
+        assertAll(
+            () -> assertEquals(25, countBefore),
+            () -> assertEquals(26, countAfter)
+        );
     }
 
 }

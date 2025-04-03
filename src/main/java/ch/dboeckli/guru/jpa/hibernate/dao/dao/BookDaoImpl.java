@@ -7,6 +7,7 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,6 +33,39 @@ public class BookDaoImpl implements BookDao {
         try (EntityManager em = getEntityManager()) {
             TypedQuery<Book> typedQuery = em.createNamedQuery(Book.FIND_ALL_QUERY, Book.class);
             return typedQuery.getResultList();
+        }
+    }
+
+    @Override
+    public List<Book> findAllBooks(int pageSize, int offset) {
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b", Book.class);
+            query.setFirstResult(offset);
+            query.setMaxResults(pageSize);
+            return query.getResultList();
+        }
+    }
+
+    @Override
+    public List<Book> findAllBooks(Pageable pageable) {
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b", Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+            return query.getResultList();
+        }
+    }
+
+    @Override
+    public List<Book> findAllBooksSortByTitle(Pageable pageable) {
+        try (EntityManager em = getEntityManager()) {
+            String sql = "SELECT b FROM Book b ORDER BY b.title " + pageable.getSort()
+                .getOrderFor("title").getDirection().name();
+
+            TypedQuery<Book> query = em.createQuery(sql, Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+            return query.getResultList();
         }
     }
 
