@@ -8,7 +8,7 @@
         <option name="value" value="true" />
       </param>
     </additionalParameters>
-    <module name="sdjpa-intro" />
+    <module name="sdjpa-hibernate-dao" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="ch.dboeckli.guru.jpa.hibernate.dao.Spring6Application" />
     <method v="2">
       <option name="Make" enabled="true" />
