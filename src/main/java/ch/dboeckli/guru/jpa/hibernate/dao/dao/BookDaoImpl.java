@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -59,8 +60,8 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findAllBooksSortByTitle(Pageable pageable) {
         try (EntityManager em = getEntityManager()) {
-            String sql = "SELECT b FROM Book b ORDER BY b.title " + pageable.getSort()
-                .getOrderFor("title").getDirection().name();
+            String sql = "SELECT b FROM Book b ORDER BY b.title " + Objects.requireNonNull(pageable.getSort()
+                .getOrderFor("title")).getDirection().name();
 
             TypedQuery<Book> query = em.createQuery(sql, Book.class);
             query.setFirstResult(Math.toIntExact(pageable.getOffset()));
