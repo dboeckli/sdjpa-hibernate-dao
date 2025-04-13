@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -70,8 +71,8 @@ public class AuthorDaoImpl implements AuthorDao {
             String hql = "SELECT a FROM Author a where a.lastName = :lastName ";
 
             if (pageable.getSort().getOrderFor("firstname") != null) {
-                hql = hql + " order by a.firstName " + pageable.getSort()
-                    .getOrderFor("firstname")
+                hql = hql + " order by a.firstName " + Objects.requireNonNull(pageable.getSort()
+                    .getOrderFor("firstname"))
                     .getDirection().name();
             }
 
