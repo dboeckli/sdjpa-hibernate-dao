@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "application-template.fullname" . }}-mysql
-  namespace: {{ .Values.deployment.namespace }}
+  name: {{ include "sdjpa-hibernate-dao-mysql.fullname" . }}
+  namespace: {{ .Values.global.namespace }}
   labels:
-    {{- include "application-template.labels" . | nindent 4 }}
+    {{- include "sdjpa-hibernate-dao-mysql.labels" . | nindent 4 }}
     app.kubernetes.io/component: database
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "application-template.selectorLabels" . | nindent 6 }}
+      {{- include "sdjpa-hibernate-dao-mysql.selectorLabels" . | nindent 6 }}
       app.kubernetes.io/component: database
   template:
     metadata:
       labels:
-        {{- include "application-template.selectorLabels" . | nindent 8 }}
+        {{- include "sdjpa-hibernate-dao-mysql.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: database
     spec:
       containers:
@@ -29,7 +29,7 @@ spec:
               value: "true"
           envFrom:
             - secretRef:
-                name: {{ include "application-template.fullname" . }}-mysql-secrets
+                name: {{ include "sdjpa-hibernate-dao-mysql.fullname" . }}-secrets
           args:
             - --character-set-server=utf8mb4
             - --collation-server=utf8mb4_unicode_ci
@@ -47,4 +47,4 @@ spec:
           emptyDir: { }
         - name: mysql-init-script
           configMap:
-            name: {{ include "application-template.fullname" . }}-mysql-init
+            name: {{ include "sdjpa-hibernate-dao-mysql.fullname" . }}-init

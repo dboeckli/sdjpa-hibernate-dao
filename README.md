@@ -22,7 +22,7 @@ When updating 'src/scripts/init-mysql-mysql.sql', apply the changes to the Kuber
 kubectl create configmap mysql-init-script --from-file=init.sql=src/scripts/init-mysql.sql --dry-run=client -o yaml | Out-File -Encoding utf8 k8s/mysql-init-script-configmap.yaml
 ```
 
-### Deployment
+### K8s Deployment
 
 To deploy all resources:
 ```bash
@@ -38,6 +38,58 @@ Check
 ```bash
 kubectl get deployments -o wide
 kubectl get pods -o wide
+```
+
+### Deployment with Helm
+
+Be aware that we are using a different namespace here (not default).
+
+Go to the directory where the tgz file has been created after 'mvn install'
+```powershell
+cd target/helm/repo
+```
+
+unpack
+```powershell
+$file = Get-ChildItem -Filter sdjpa-hibernate-dao-v*.tgz | Select-Object -First 1
+tar -xvf $file.Name
+```
+
+install
+```powershell
+$APPLICATION_NAME = Get-ChildItem -Directory | Where-Object { $_.LastWriteTime -ge $file.LastWriteTime } | Select-Object -ExpandProperty Name
+helm upgrade --install $APPLICATION_NAME ./$APPLICATION_NAME --namespace sdjpa-hibernate-dao --create-namespace --wait --timeout 5m --debug
+```
+
+show logs and show event
+```powershell
+kubectl get pods -n sdjpa-hibernate-dao
+```
+replace $POD with pods from the command above
+```powershell
+kubectl logs $POD -n sdjpa-hibernate-dao --all-containers
+```
+
+Show Details and Event
+
+$POD_NAME can be: sdjpa-hibernate-dao-mysql, sdjpa-hibernate-dao
+```powershell
+kubectl describe pod $POD_NAME -n sdjpa-hibernate-dao
+```
+
+Show Endpoints
+```powershell
+kubectl get endpoints -n sdjpa-hibernate-dao
+```
+
+test
+```powershell
+helm test $APPLICATION_NAME --namespace sdjpa-hibernate-dao --logs
+```
+
+uninstall
+```powershell
+helm uninstall $APPLICATION_NAME  --namespace sdjpa-hibernate-dao
 ```
 
 ## Running the Application

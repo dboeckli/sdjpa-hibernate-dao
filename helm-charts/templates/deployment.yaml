@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "application-template.fullname" . }}
-  namespace: {{ .Values.deployment.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     {{- include "application-template.labels" . | nindent 4 }}
 spec:
@@ -18,7 +18,7 @@ spec:
       initContainers:
         - name: wait-for-mysql
           image: busybox:1.37.0
-          command: [ 'sh', '-c', 'until nc -z {{ .Chart.Name }}-mysql {{ .Values.mysql.port }}; do echo "[busybox: wait-for-mysql] waiting for mysql"; sleep 2; done; echo "[busybox: wait-for-mysql] mysql is available"' ]
+          command: [ 'sh', '-c', 'until nc -z {{ .Values.mysql.serviceFQDN  }} {{ .Values.mysql.port }}; do echo "[busybox: wait-for-mysql] waiting for mysql"; sleep 2; done; echo "[busybox: wait-for-mysql] mysql is available"' ]
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -31,14 +31,10 @@ spec:
             - name: SPRING_FLYWAY_ENABLED
               value: "true"
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://{{ .Chart.Name }}-mysql:{{ .Values.mysql.port }}/{{ .Values.mysql.database }}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
-            - name: SPRING_DATASOURCE_USERNAME
-              value: user
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: password
+              value: jdbc:mysql://{{ .Values.mysql.serviceFQDN  }}:{{ .Values.mysql.port }}/{{ .Values.mysql.database }}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
           envFrom:
             - secretRef:
-                name: {{ include "application-template.fullname" . }}-mysql-secrets
+                name: {{ include "application-template.fullname" . }}-secrets
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}

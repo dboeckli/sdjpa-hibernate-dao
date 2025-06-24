@@ -1,17 +1,18 @@
+global:
+  timezone: Europe/Zurich
+  timezonePath: /etc/localtime
+  springDebug: false
+  namespace: sdjpa-hibernate-dao
+
 replicaCount: 1
 
 image:
   repository: @docker.repo@/@project.artifactId@
   tag: @project.version@
 
-# Namespace configuration
-# This defines the Kubernetes namespace where the resources will be deployed
-deployment:
-  namespace: sdjpa-hibernate-dao
-
 service:
   type: NodePort
-  port: 80
+  port: 8080
   targetPort: 8080
   nodePort: 30080
 
@@ -22,11 +23,6 @@ resources:
   requests:
     cpu: 250m
     memory: 512Mi
-
-global:
-  timezone: Europe/Zurich
-  timezonePath: /etc/localtime
-  springDebug: false
 
 spring:
   profiles:
@@ -46,6 +42,8 @@ probes:
     failureThreshold: 6
 
 mysql:
+  enabled: true
+
   database: bookdb
   port: 3306
 
@@ -56,6 +54,8 @@ mysql:
   password: password
 
   rootPassword: password
+
+  serviceFQDN: "sdjpa-hibernate-dao-sdjpa-hibernate-dao-mysql.sdjpa-hibernate-dao.svc.cluster.local"
 
 ingress:
   enabled: false
