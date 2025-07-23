@@ -92,6 +92,16 @@ uninstall
 helm uninstall $APPLICATION_NAME  --namespace sdjpa-hibernate-dao
 ```
 
+delete all
+```powershell
+kubectl delete all --all -n sdjpa-hibernate-dao
+```
+
+create busybox sidecar
+```powershell
+kubectl run busybox-test --rm -it --image=busybox:1.36 --namespace=sdjpa-hibernate-dao --command -- sh
+```
+
 ## Running the Application
 1. Choose between h2 or mysql for database schema management. (you can use one of the preconfigured intellij runners)
 2. Start the application with the appropriate profile and properties.
