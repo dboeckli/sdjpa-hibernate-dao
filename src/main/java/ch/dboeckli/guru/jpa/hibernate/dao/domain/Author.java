@@ -1,6 +1,6 @@
 package ch.dboeckli.guru.jpa.hibernate.dao.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
