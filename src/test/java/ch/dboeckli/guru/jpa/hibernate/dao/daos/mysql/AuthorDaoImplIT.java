@@ -1,27 +1,29 @@
-package ch.dboeckli.guru.jpa.hibernate.dao.dao.h2;
+package ch.dboeckli.guru.jpa.hibernate.dao.daos.mysql;
 
-import ch.dboeckli.guru.jpa.hibernate.dao.dao.AuthorDao;
-import ch.dboeckli.guru.jpa.hibernate.dao.dao.AuthorDaoImpl;
+import ch.dboeckli.guru.jpa.hibernate.dao.daos.AuthorDao;
+import ch.dboeckli.guru.jpa.hibernate.dao.daos.AuthorDaoImpl;
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Author;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import({ AuthorDaoImpl.class })
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test_mysql")
+@Import(AuthorDaoImpl.class)
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
-class AuthorDaoImplTest {
+class AuthorDaoImplIT {
 
     @Autowired
     AuthorDao authorDao;
@@ -35,6 +37,7 @@ class AuthorDaoImplTest {
         Author saved = authorDao.saveNewAuthor(author);
 
         authorDao.deleteAuthorById(saved.getId());
+
 
         Author deleted = authorDao.getById(saved.getId());
         assertThat(deleted).isNull();
@@ -83,6 +86,7 @@ class AuthorDaoImplTest {
         Author author = authorDao.findAuthorByNameCriteria("Craig", "Walls");
         assertThat(author).isNotNull();
     }
+
 
     @Test
     void testGetAuthorByNameNative() {
