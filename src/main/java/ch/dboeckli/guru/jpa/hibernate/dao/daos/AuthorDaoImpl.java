@@ -1,4 +1,4 @@
-package ch.dboeckli.guru.jpa.hibernate.dao.dao;
+package ch.dboeckli.guru.jpa.hibernate.dao.daos;
 
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Author;
 import jakarta.persistence.EntityManager;

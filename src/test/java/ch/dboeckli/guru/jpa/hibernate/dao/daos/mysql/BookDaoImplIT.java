@@ -1,28 +1,30 @@
-package ch.dboeckli.guru.jpa.hibernate.dao.dao.h2;
+package ch.dboeckli.guru.jpa.hibernate.dao.daos.mysql;
 
-import ch.dboeckli.guru.jpa.hibernate.dao.dao.BookDao;
-import ch.dboeckli.guru.jpa.hibernate.dao.dao.BookDaoImpl;
+import ch.dboeckli.guru.jpa.hibernate.dao.daos.BookDao;
+import ch.dboeckli.guru.jpa.hibernate.dao.daos.BookDaoImpl;
 import ch.dboeckli.guru.jpa.hibernate.dao.domain.Book;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.AssertionsForInterfaceTypes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import({ BookDaoImpl.class })
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test_mysql")
+@Import(BookDaoImpl.class)
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
-class BookDaoImplTest {
+class BookDaoImplIT {
 
     @Autowired
     BookDao bookDao;
@@ -44,7 +46,6 @@ class BookDaoImplTest {
         Book book = bookDao.findBookByTitleWithNamedQuery("Domain-Driven Design");
         assertThat(book).isNotNull();
     }
-
 
     @Test
     void testGetBookByTitleCriteria() {
