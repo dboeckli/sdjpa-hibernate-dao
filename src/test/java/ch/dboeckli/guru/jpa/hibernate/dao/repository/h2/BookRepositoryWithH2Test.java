@@ -11,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
-// we are using the h2 in compatible mode with mysql. to assure that it is not replaced with h2
+// we are using the h2 in compatible mode with mysql. to assure that it is not replaced
+// with h2
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BookRepositoryWithH2Test {
 
@@ -26,10 +27,7 @@ class BookRepositoryWithH2Test {
 
         long countAfter = bookRepository.count();
 
-        assertAll(
-            () -> assertEquals(25, countBefore),
-            () -> assertEquals(26, countAfter)
-        );
+        assertAll(() -> assertEquals(25, countBefore), () -> assertEquals(26, countAfter));
     }
 
 }

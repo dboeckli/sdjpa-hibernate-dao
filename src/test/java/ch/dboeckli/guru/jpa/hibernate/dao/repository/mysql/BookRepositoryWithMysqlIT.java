@@ -14,7 +14,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ActiveProfiles("test_mysql")
 @DirtiesContext
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)  // to assure that it is not replaced with h2
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // to assure
+                                                                             // that it is
+                                                                             // not
+                                                                             // replaced
+                                                                             // with h2
 class BookRepositoryWithMysqlIT {
 
     @Autowired

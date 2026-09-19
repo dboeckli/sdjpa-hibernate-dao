@@ -30,7 +30,8 @@ public class AuthorDaoImpl implements AuthorDao {
     public Author findAuthorByName(String firstName, String lastName) {
         try (EntityManager em = getEntityManager()) {
             TypedQuery<Author> query = em.createQuery(
-                "SELECT author FROM Author author WHERE author.firstName = :first_name and author.lastName = :last_name", Author.class);
+                    "SELECT author FROM Author author WHERE author.firstName = :first_name and author.lastName = :last_name",
+                    Author.class);
             query.setParameter("first_name", firstName);
             query.setParameter("last_name", lastName);
             return query.getSingleResult();
@@ -50,8 +51,8 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public List<Author> listAuthorByLastNameLike(String lastName) {
         try (EntityManager em = getEntityManager()) {
-            TypedQuery<Author> query = em.createQuery(
-                "SELECT author FROM Author author WHERE author.lastName LIKE :last_name", Author.class);
+            TypedQuery<Author> query = em
+                .createQuery("SELECT author FROM Author author WHERE author.lastName LIKE :last_name", Author.class);
             query.setParameter("last_name", lastName + "%");
             return query.getResultList();
         }
@@ -71,9 +72,8 @@ public class AuthorDaoImpl implements AuthorDao {
             String hql = "SELECT a FROM Author a where a.lastName = :lastName ";
 
             if (pageable.getSort().getOrderFor("firstname") != null) {
-                hql = hql + " order by a.firstName " + Objects.requireNonNull(pageable.getSort()
-                    .getOrderFor("firstname"))
-                    .getDirection().name();
+                hql = hql + " order by a.firstName "
+                        + Objects.requireNonNull(pageable.getSort().getOrderFor("firstname")).getDirection().name();
             }
 
             TypedQuery<Author> query = em.createQuery(hql, Author.class);
@@ -147,7 +147,8 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public Author findAuthorByNameNative(String firstName, String lastName) {
         try (EntityManager em = getEntityManager()) {
-            Query nativeQuery = em.createNativeQuery("SELECT * FROM author a WHERE a.first_name = ? and a.last_name = ?", Author.class);
+            Query nativeQuery = em
+                .createNativeQuery("SELECT * FROM author a WHERE a.first_name = ? and a.last_name = ?", Author.class);
 
             nativeQuery.setParameter(1, firstName);
             nativeQuery.setParameter(2, lastName);
@@ -156,7 +157,8 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-    private EntityManager getEntityManager(){
+    private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+
 }

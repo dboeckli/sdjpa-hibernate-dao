@@ -16,6 +16,7 @@ import java.util.Objects;
 public class Book {
 
     public static final String FIND_ALL_QUERY = "book_find_all";
+
     public static final String FIND_BY_TITLE_QUERY = "book_find_by_title";
 
     @Id
@@ -23,8 +24,11 @@ public class Book {
     private Long id;
 
     private String title;
+
     private String isbn;
+
     private String publisher;
+
     private Long authorId;
 
     public Book(String title, String isbn, String publisher) {
@@ -35,8 +39,10 @@ public class Book {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Book book = (Book) o;
 
@@ -47,4 +53,5 @@ public class Book {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
 }

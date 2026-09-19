@@ -113,10 +113,8 @@ class BookDaoImplIT {
     void findAllBooks() {
         List<Book> books = bookDao.findAllBooks();
 
-        assertAll("Author List Assertions",
-            () -> assertThat(books).isNotNull(),
-            () -> assertThat(books).hasSizeGreaterThan(0)
-        );
+        assertAll("Author List Assertions", () -> assertThat(books).isNotNull(),
+                () -> assertThat(books).hasSizeGreaterThan(0));
     }
 
     @Test
@@ -161,4 +159,5 @@ class BookDaoImplIT {
         AssertionsForInterfaceTypes.assertThat(books).isNotNull();
         AssertionsForInterfaceTypes.assertThat(books).hasSize(10);
     }
+
 }

@@ -12,10 +12,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @NamedQuery(name = Author.FIND_ALL_QUERY, query = "FROM Author")
-@NamedQuery(name = Author.FIND_BY_NAME_QUERY, query = "FROM Author a WHERE a.firstName = :first_name and a.lastName = :last_name")
+@NamedQuery(name = Author.FIND_BY_NAME_QUERY,
+        query = "FROM Author a WHERE a.firstName = :first_name and a.lastName = :last_name")
 public class Author {
 
     public static final String FIND_ALL_QUERY = "author_find_all";
+
     public static final String FIND_BY_NAME_QUERY = "author_find_by_name";
 
     @Id
@@ -23,12 +25,15 @@ public class Author {
     private Long id;
 
     private String firstName;
+
     private String lastName;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Author author = (Author) o;
 
