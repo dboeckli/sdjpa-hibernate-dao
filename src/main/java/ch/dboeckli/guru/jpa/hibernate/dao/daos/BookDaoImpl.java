@@ -60,8 +60,8 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> findAllBooksSortByTitle(Pageable pageable) {
         try (EntityManager em = getEntityManager()) {
-            String sql = "SELECT b FROM Book b ORDER BY b.title " + Objects.requireNonNull(pageable.getSort()
-                .getOrderFor("title")).getDirection().name();
+            String sql = "SELECT b FROM Book b ORDER BY b.title "
+                    + Objects.requireNonNull(pageable.getSort().getOrderFor("title")).getDirection().name();
 
             TypedQuery<Book> query = em.createQuery(sql, Book.class);
             query.setFirstResult(Math.toIntExact(pageable.getOffset()));
@@ -80,8 +80,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book findBookByTitle(String title) {
         try (EntityManager em = getEntityManager()) {
-            TypedQuery<Book> query = em.createQuery(
-                "SELECT book FROM Book book WHERE book.title = :title", Book.class);
+            TypedQuery<Book> query = em.createQuery("SELECT book FROM Book book WHERE book.title = :title", Book.class);
             query.setParameter("title", title);
 
             return query.getSingleResult();
@@ -161,7 +160,8 @@ public class BookDaoImpl implements BookDao {
         }
     }
 
-    private EntityManager getEntityManager(){
+    private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+
 }
